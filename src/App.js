@@ -1,22 +1,22 @@
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Main from "./Pages/Main";
+import Menu from "./Pages/Menu";
+import Blank from "./Pages/Blank";
+import "boxicons/css/boxicons.min.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/menu" element={<Menu />}>
+          <Route index element={<Blank />} />
+          <Route path="/menu/calculation" element={<Blank />} />
+          <Route path="/menu/about" element={<Blank />} />
+          <Route path="/menu/user" element={<Blank />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
