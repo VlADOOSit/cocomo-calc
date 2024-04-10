@@ -14,7 +14,7 @@ const Attributes = () => {
   };
 
   return (
-    <form>
+    <div className={"attr_form"}>
       {radioGroups.map((group, index) => (
         <div className={"attr_wrapper"} key={index}>
           <label className={"attr_input_group"}>
@@ -38,7 +38,7 @@ const Attributes = () => {
           </label>
         </div>
       ))}
-    </form>
+    </div>
   );
 };
 

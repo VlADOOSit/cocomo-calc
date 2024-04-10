@@ -5,7 +5,9 @@ import useKlocStore from "../Store/KlocStore";
 import useTeamTypeStore from "../Store/TeamTypeStore";
 import useAttributesStore from "../Store/Attributes";
 import { odds } from "./BaseOdds";
-
+import { useState } from "react";
+import { CSSTransition } from "react-transition-group";
+import "./style.css";
 function mulAttr(attr) {
   let result = 1;
   for (let key in attr) {
@@ -25,12 +27,27 @@ const Calculation = () => {
     console.log(odds[teamType].a);
   }
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  function toggle() {
+    setIsOpen((isOpen) => !isOpen);
+  }
+
   return (
     <div>
-      This is Calculation page
       <KlocInput />
       <Dropdown />
-      <Attributes />
+
+      <button onClick={toggle}>Toggle show</button>
+
+      <CSSTransition
+        in={isOpen}
+        timeout={300} // Устанавливаем время анимации в миллисекундах
+        classNames="fade"
+        unmountOnExit // Опция для удаления компонента после анимации
+      >
+        <Attributes />
+      </CSSTransition>
       <button onClick={calcTest}>TEST</button>
     </div>
   );
