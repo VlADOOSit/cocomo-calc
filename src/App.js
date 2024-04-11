@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./Pages/Main";
 import Menu from "./Pages/Menu";
-import Calculation from "./Pages/Calculation";
+import Calculation from "./Pages/Calculation/Calculation";
 import "boxicons/css/boxicons.min.css";
 import Profile from "./Pages/Profile";
 

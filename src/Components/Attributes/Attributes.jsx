@@ -1,6 +1,6 @@
 import "./Attributes.css";
 import useAttributesStore from "../../Store/Attributes";
-import { radioGroups } from "./AttributesConstants";
+import { radioGroups } from "../../Constants/AttributesConstants";
 
 const Attributes = () => {
   const attr = useAttributesStore((state) => state.Attr);

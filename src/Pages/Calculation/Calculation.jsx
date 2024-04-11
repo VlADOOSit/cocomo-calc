@@ -1,20 +1,15 @@
-import KlocInput from "../Components/KlocInput/KlocInput";
-import Dropdown from "../Components/Dropdown/Dropdown";
-import Attributes from "../Components/Attributes/Attributes";
-import useKlocStore from "../Store/KlocStore";
-import useTeamTypeStore from "../Store/TeamTypeStore";
-import useAttributesStore from "../Store/Attributes";
-import { odds } from "./BaseOdds";
+import KlocInput from "../../Components/KlocInput/KlocInput";
+import Dropdown from "../../Components/Dropdown/Dropdown";
+import Attributes from "../../Components/Attributes/Attributes";
+import useKlocStore from "../../Store/KlocStore";
+import useTeamTypeStore from "../../Store/TeamTypeStore";
+import useAttributesStore from "../../Store/Attributes";
+import { odds } from "../../Constants/BaseOdds";
 import { useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import "./style.css";
-function mulAttr(attr) {
-  let result = 1;
-  for (let key in attr) {
-    result *= parseFloat(attr[key]);
-  }
-  return result;
-}
+import "./Calculation.css";
+import calcRft from "../../Utils/CalcRft";
+
 const Calculation = () => {
   const klocValue = useKlocStore((state) => state.klocValue);
   const teamType = useTeamTypeStore((state) => state.TeamType);
@@ -23,7 +18,7 @@ const Calculation = () => {
     console.log(klocValue);
     console.log(teamType);
     console.log(attrValue);
-    console.log(mulAttr(attrValue));
+    console.log(calcRft(attrValue));
     console.log(odds[teamType].a);
   }
 
