@@ -1,7 +1,43 @@
 .attr_input {
-    margin-left: 30px;
-    width: 30px;
+    padding: 30px;
+    border-radius: 20px;
+    width: 125px;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+    border: 2px solid #f0f0f0;
 }
+
+.attr_input:hover {
+    border: 2px solid #ad8eff;
+}
+
+.attr_input input {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+input[type='radio'] {
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #7238ff;
+    box-shadow: 0 0 0 1px #7238ff;
+}
+
+input[type='radio']:checked {
+    box-shadow: 0 0 0 1px #ad8eff;
+    background-color: #ad8eff;
+    border-width: 0.2rem;
+}
+
+input[type="radio"]:disabled {
+    box-shadow: 0 0 0 1px #919193;
+    background-color: #939393;
+    border: 3px solid #8a8a8a
+}
+
 .attr_input_group {
     display: flex;
     text-align: center;
@@ -11,4 +47,23 @@
 
 .group_title {
     width: 155px;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.label_value {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.attr_header {
+    display: flex;
+    margin-left: 155px;
+    margin-top: 30px;
+}
+
+.attr_header_item {
+    width: 125px;
+    text-align: center;
+    font-size: 18px;
 }

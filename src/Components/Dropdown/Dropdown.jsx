@@ -14,7 +14,7 @@ const Dropdown = () => {
       >
         <option value="organic">Organic</option>
 
-        <option value="semidetach">Semidetach</option>
+        <option value="semidetached">Semidetach</option>
 
         <option value="embedded">Embedded</option>
       </select>
