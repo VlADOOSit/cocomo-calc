@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import "./sidebar.css";
+import "./Sidebar.css";
+import AuthButton from "./AuthButton";
 
 const sidebarNavItems = [
   {
@@ -78,6 +79,7 @@ const Sidebar = () => {
             </div>
           </Link>
         ))}
+        <AuthButton />
       </div>
     </div>
   );

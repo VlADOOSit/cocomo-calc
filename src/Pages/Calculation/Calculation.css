@@ -68,9 +68,15 @@ body {
 }
 
 .base_calc_btn_wrapper {
+    margin-top: 40px;
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+}
+
+.base_calc_btn_container {
+    display: flex;
+    justify-content: space-around;
+    width: 720px;
 }
 
 .base_calc_btn {
@@ -82,6 +88,7 @@ body {
     border-radius: 20px;
     margin-bottom: 30px;
     cursor: pointer;
+    width: 145px;
 }
 
 .switch_container {

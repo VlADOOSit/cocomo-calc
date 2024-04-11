@@ -1,0 +1,37 @@
+.history_container {
+    border: 2px solid #ad8eff;
+    padding: 20px 60px;
+    margin-top: 20px;
+    border-radius: 20px;
+}
+.history_item_id {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 35px;
+    font-weight: bold;
+
+}
+
+.history_data_container_item {
+    margin-top: 10px;
+}
+
+.history_data_container {
+    margin-bottom: 30px;
+}
+
+.result_history_item {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.result_history_value {
+    font-size: 20px;
+}
+
+.history_input_data_wrapper {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}

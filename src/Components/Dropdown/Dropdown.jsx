@@ -7,6 +7,7 @@ const Dropdown = () => {
 
   return (
     <div>
+      <div className={"dropdown_title"}>Тип проекту</div>
       <select
         value={TeamType}
         onChange={(e) => setTeamType(e.target.value)}

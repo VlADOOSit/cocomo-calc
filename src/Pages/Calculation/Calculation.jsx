@@ -24,6 +24,7 @@ const Calculation = () => {
   const [baseLaborIntensity, setBaseLaborIntensity] = useState("0");
   const [baseDevelopmentTime, setBaseDevelopmentTime] = useState("0");
   const [baseNumberOfDevelopers, setBaseNumberOfDevelopers] = useState("0");
+  const [isOpen, setIsOpen] = useState(false);
   function calcTest() {
     let laborIntensityNum = BaseCocomoLaborIntensity(
       baseOdds[teamType].a,
@@ -50,8 +51,6 @@ const Calculation = () => {
     console.log(calcRft(attrValue));
     console.log(baseOdds[teamType].a);
   }
-
-  const [isOpen, setIsOpen] = useState(false);
 
   function toggle() {
     setIsOpen((isOpen) => !isOpen);
@@ -88,9 +87,12 @@ const Calculation = () => {
             </div>
           </div>
           <div className={"base_calc_btn_wrapper"}>
-            <button onClick={calcTest} className={"base_calc_btn"}>
-              Calculate
-            </button>
+            <div className={"base_calc_btn_container"}>
+              <button onClick={calcTest} className={"base_calc_btn"}>
+                Calculate
+              </button>
+              <button className={"base_calc_btn"}>Save</button>
+            </div>
           </div>
         </div>
       </div>
@@ -113,9 +115,9 @@ const Calculation = () => {
       <div className={"attr_form_page"}>
         <CSSTransition
           in={isOpen}
-          timeout={300} // Устанавливаем время анимации в миллисекундах
+          timeout={300}
           classNames="fade"
-          unmountOnExit // Опция для удаления компонента после анимации
+          unmountOnExit
         >
           <Attributes />
         </CSSTransition>

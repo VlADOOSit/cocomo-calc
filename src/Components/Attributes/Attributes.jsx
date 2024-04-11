@@ -124,9 +124,12 @@ const Attributes = () => {
           </div>
         </div>
         <div className={"base_calc_btn_wrapper"}>
-          <button onClick={calcAttr} className={"base_calc_btn"}>
-            Calculate
-          </button>
+          <div className={"base_calc_btn_container"}>
+            <button onClick={calcAttr} className={"base_calc_btn"}>
+              Calculate
+            </button>
+            <button className={"base_calc_btn"}>Save</button>
+          </div>
         </div>
       </div>
     </div>

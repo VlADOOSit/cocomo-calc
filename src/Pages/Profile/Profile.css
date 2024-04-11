@@ -1,0 +1,9 @@
+.history_switch {
+    display: flex;
+    align-items: center;
+}
+
+.history_switch_title {
+    margin-right: 40px;
+    font-size: 19px;
+}

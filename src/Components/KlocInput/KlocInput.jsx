@@ -13,6 +13,7 @@ const KlocInput = () => {
 
   return (
     <div>
+      <div className={"kloc_input_title"}>KLOC</div>
       <input
         className={"kloc_input"}
         type={"number"}
