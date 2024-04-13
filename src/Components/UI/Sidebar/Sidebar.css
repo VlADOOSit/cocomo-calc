@@ -19,6 +19,12 @@
         position: relative;
 }
 
+.logout_btn {
+    background-color: #fff;
+    border: none;
+    padding: 0;
+}
+
 .sidebar__menu__item {
     display: flex;
     align-items: center;

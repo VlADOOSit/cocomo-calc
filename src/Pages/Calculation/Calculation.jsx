@@ -5,36 +5,36 @@ import Switch from "react-switch";
 import useKlocStore from "../../Store/KlocStore";
 import useTeamTypeStore from "../../Store/TeamTypeStore";
 import useAttributesStore from "../../Store/Attributes";
-import { baseOdds } from "../../Constants/BaseOdds";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import "./Calculation.css";
-import calcRft from "../../Utils/CalcRft";
 import {
   BaseCocomoDevelopmentTime,
   BaseCocomoLaborIntensity,
   BaseCocomoNumberOfDevelopers,
 } from "../../Utils/BaseCocomo";
+import useLoginStore from "../../Store/LoginStore";
+import { addCalcModel } from "../../Api/calcModels";
 
 const Calculation = () => {
   const klocValue = useKlocStore((state) => state.klocValue);
   const teamType = useTeamTypeStore((state) => state.TeamType);
   const attrValue = useAttributesStore((state) => state.Attr);
+  const isAuth = useLoginStore((state) => state.isLogin);
 
   const [baseLaborIntensity, setBaseLaborIntensity] = useState("0");
   const [baseDevelopmentTime, setBaseDevelopmentTime] = useState("0");
   const [baseNumberOfDevelopers, setBaseNumberOfDevelopers] = useState("0");
+
+  const [conditionCalc, setConditionCalc] = useState(true);
+  const [conditionSave, setConditionSave] = useState(true);
+
   const [isOpen, setIsOpen] = useState(false);
-  function calcTest() {
-    let laborIntensityNum = BaseCocomoLaborIntensity(
-      baseOdds[teamType].a,
-      baseOdds[teamType].b,
-      klocValue,
-    );
+  async function calculate() {
+    let laborIntensityNum = BaseCocomoLaborIntensity(klocValue, teamType);
     let developmentTimeNum = BaseCocomoDevelopmentTime(
-      baseOdds[teamType].c,
-      baseOdds[teamType].d,
       laborIntensityNum,
+      teamType,
     );
 
     let numberOfDevelopersNum = BaseCocomoNumberOfDevelopers(
@@ -45,23 +45,59 @@ const Calculation = () => {
     setBaseDevelopmentTime(developmentTimeNum.toFixed(2));
     setBaseNumberOfDevelopers(numberOfDevelopersNum.toFixed(2));
 
-    console.log(klocValue);
-    console.log(teamType);
-    console.log(attrValue);
-    console.log(calcRft(attrValue));
-    console.log(baseOdds[teamType].a);
+    await addCalcModel({
+      project_type: teamType,
+      saving_type: "history",
+      kloc: klocValue,
+      advancedFlag: false,
+      rating_attr: attrValue,
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  async function saveClickBase() {
+    await addCalcModel({
+      project_type: teamType,
+      saving_type: "favorites",
+      kloc: klocValue,
+      advancedFlag: false,
+      rating_attr: attrValue,
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   function toggle() {
     setIsOpen((isOpen) => !isOpen);
   }
 
+  useEffect(() => {
+    if (!isNaN(klocValue)) {
+      setConditionCalc(false);
+      if (isAuth === true) {
+        setConditionSave(false);
+      }
+    } else {
+      setConditionCalc(true);
+      setConditionSave(true);
+    }
+  }, [klocValue, isAuth]);
+
   return (
     <div>
       <div className={"base_calc_page"}>
         <div className={"base_calc_wrapper"}>
           <div className={"input_data_wrapper"}>
-            <KlocInput />
+            <KlocInput value={klocValue} />
             <Dropdown />
           </div>
           <div className={"result_container"}>
@@ -79,7 +115,7 @@ const Calculation = () => {
             </div>
             <div className={"result_container_item"}>
               <div className={"result_container_item_value"}>
-                {baseNumberOfDevelopers !== "0.00"
+                {baseNumberOfDevelopers !== "NaN"
                   ? baseNumberOfDevelopers
                   : "0"}
               </div>
@@ -88,10 +124,20 @@ const Calculation = () => {
           </div>
           <div className={"base_calc_btn_wrapper"}>
             <div className={"base_calc_btn_container"}>
-              <button onClick={calcTest} className={"base_calc_btn"}>
+              <button
+                disabled={conditionCalc}
+                onClick={calculate}
+                className={"base_calc_btn"}
+              >
                 Calculate
               </button>
-              <button className={"base_calc_btn"}>Save</button>
+              <button
+                onClick={saveClickBase}
+                disabled={conditionSave}
+                className={"base_calc_btn"}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>

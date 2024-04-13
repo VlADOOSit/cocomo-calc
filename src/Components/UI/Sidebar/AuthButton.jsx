@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 //import { logout } from "../../../Api/auth";
 import { Link } from "react-router-dom";
-import useLoginStore from "../../../Store/LogiStore";
+import useLoginStore from "../../../Store/LoginStore";
 import "./Sidebar.css";
+import { logout } from "../../../Api/auth";
 
 function AuthButton() {
   const isAuth = useLoginStore((state) => state.isLogin);
@@ -10,10 +11,12 @@ function AuthButton() {
 
   async function click() {
     if (isAuth) {
+      await logout()
+        .then()
+        .catch((e) => console.log(e));
       setIsAuth(false);
       localStorage.setItem("isAuth", "false");
       localStorage.removeItem("token");
-      localStorage.removeItem("avatar");
     }
   }
 
@@ -28,11 +31,14 @@ function AuthButton() {
 
   if (isAuth) {
     return (
-      <div>
-        <button className={"logout_btn"} onClick={click}>
-          Logout
-        </button>
-      </div>
+      <Link to={"/"} onClick={click}>
+        <div className={`sidebar__menu__item`}>
+          <div className="sidebar__menu__item__icon">
+            <i className="bx bx-log-out"></i>
+          </div>
+          <div className="sidebar__menu__item__text">Log out</div>
+        </div>
+      </Link>
     );
   }
   return (

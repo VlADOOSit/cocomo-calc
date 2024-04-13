@@ -5,17 +5,18 @@ import { useEffect, useState } from "react";
 import useKlocStore from "../../Store/KlocStore";
 import useTeamTypeStore from "../../Store/TeamTypeStore";
 import { CocomoLaborIntensity } from "../../Utils/CocomoII";
-import { odds } from "../../Constants/Odds";
 import calcRft from "../../Utils/CalcRft";
 import {
   BaseCocomoDevelopmentTime,
   BaseCocomoNumberOfDevelopers,
 } from "../../Utils/BaseCocomo";
-import { baseOdds } from "../../Constants/BaseOdds";
+import useLoginStore from "../../Store/LoginStore";
+import { addCalcModel } from "../../Api/calcModels";
 
 const Attributes = () => {
   const attr = useAttributesStore((state) => state.Attr);
   const setAttr = useAttributesStore((state) => state.setAttributes);
+  const isAuth = useLoginStore((state) => state.isLogin);
 
   const klocValue = useKlocStore((state) => state.klocValue);
   const teamType = useTeamTypeStore((state) => state.TeamType);
@@ -23,6 +24,9 @@ const Attributes = () => {
   const [baseLaborIntensity, setBaseLaborIntensity] = useState("0");
   const [baseDevelopmentTime, setBaseDevelopmentTime] = useState("0");
   const [baseNumberOfDevelopers, setBaseNumberOfDevelopers] = useState("0");
+
+  const [conditionCalc, setConditionCalc] = useState(true);
+  const [conditionSave, setConditionSave] = useState(true);
 
   const setDefaultAttr = useAttributesStore(
     (state) => state.setDefaultAttributes,
@@ -33,6 +37,18 @@ const Attributes = () => {
     //eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (!isNaN(klocValue)) {
+      setConditionCalc(false);
+      if (isAuth === true) {
+        setConditionSave(false);
+      }
+    } else {
+      setConditionCalc(true);
+      setConditionSave(true);
+    }
+  }, [klocValue, isAuth]);
+
   const handleRadioChange = (groupName, btnValue) => {
     setAttr({
       ...attr,
@@ -40,19 +56,29 @@ const Attributes = () => {
     });
   };
 
-  function calcAttr() {
+  async function savingClick() {
+    await addCalcModel({
+      project_type: teamType,
+      saving_type: "favorites",
+      kloc: klocValue,
+      advancedFlag: true,
+      rating_attr: attr,
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  async function calcAttr() {
     let rft = calcRft(attr);
 
-    let laborIntensityNum = CocomoLaborIntensity(
-      odds[teamType].a,
-      odds[teamType].b,
-      klocValue,
-      rft,
-    );
+    let laborIntensityNum = CocomoLaborIntensity(klocValue, rft, teamType);
     let developmentTimeNum = BaseCocomoDevelopmentTime(
-      baseOdds[teamType].c,
-      baseOdds[teamType].d,
       laborIntensityNum,
+      teamType,
     );
 
     let numberOfDevelopersNum = BaseCocomoNumberOfDevelopers(
@@ -62,6 +88,20 @@ const Attributes = () => {
     setBaseLaborIntensity(laborIntensityNum.toFixed(2));
     setBaseDevelopmentTime(developmentTimeNum.toFixed(2));
     setBaseNumberOfDevelopers(numberOfDevelopersNum.toFixed(2));
+
+    await addCalcModel({
+      project_type: teamType,
+      saving_type: "history",
+      kloc: klocValue,
+      advancedFlag: true,
+      rating_attr: attr,
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   return (
@@ -125,10 +165,20 @@ const Attributes = () => {
         </div>
         <div className={"base_calc_btn_wrapper"}>
           <div className={"base_calc_btn_container"}>
-            <button onClick={calcAttr} className={"base_calc_btn"}>
+            <button
+              disabled={conditionCalc}
+              onClick={calcAttr}
+              className={"base_calc_btn"}
+            >
               Calculate
             </button>
-            <button className={"base_calc_btn"}>Save</button>
+            <button
+              onClick={savingClick}
+              disabled={conditionSave}
+              className={"base_calc_btn"}
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>

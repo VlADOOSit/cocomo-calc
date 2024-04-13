@@ -1,42 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import "./Auth.css";
-import useLoginStore from "../../Store/LogiStore";
+import useLoginStore from "../../Store/LoginStore";
+import checkAuth from "../../Utils/authService";
+import { login } from "../../Api/auth";
 
 function LoginForm() {
   const [user, setUser] = useState({});
+  const [error, setError] = useState("");
 
   const isAuth = useLoginStore((state) => state.isLogin);
-  //const setIsAuth = useLoginStore((state) => state.setIsLogin);
+  const setIsAuth = useLoginStore((state) => state.setIsLogin);
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem("token")) {
       checkAuth().then((res) => {
         if (res) {
-          dispatch({ type: "LOG_IN" });
+          setIsAuth(true);
           localStorage.setItem("isAuth", "true");
         }
       });
     }
     // eslint-disable-next-line
-  }, []);*/
+  }, []);
 
-  /*async function loginUser() {
+  async function loginUser() {
+    console.log(user);
     await login(user)
       .then((response) => {
         console.log(response);
         localStorage.setItem("token", response.data.accessToken);
-        dispatch({ type: "LOG_IN" });
+        setIsAuth(true);
         localStorage.setItem("isAuth", "true");
       })
       .catch((err) => {
         console.log(err.response);
-        setError(err.response.data);
+        setError(err.response.data.message);
       });
-  }*/
+  }
 
   if (isAuth) {
-    return <Navigate to={"/"} />;
+    return <Navigate to={"/menu/calculation"} />;
   }
 
   return (
@@ -52,14 +56,17 @@ function LoginForm() {
       <input
         className={"auth_input"}
         type={"password"}
-        onChange={(e) => setUser({ ...user, pass: e.target.value })}
+        onChange={(e) => setUser({ ...user, password: e.target.value })}
         placeholder={"Password"}
         size={25}
       />
-      <button className={"auth_btn"}>Login</button>
+      <button onClick={loginUser} className={"auth_btn"}>
+        Login
+      </button>
       <Link className={"refLog"} to={"/register"}>
         Register
       </Link>
+      <div style={{ color: "red" }}>{error}</div>
     </div>
   );
 }

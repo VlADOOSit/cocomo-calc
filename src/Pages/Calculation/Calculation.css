@@ -91,6 +91,10 @@ body {
     width: 145px;
 }
 
+.base_calc_btn:disabled {
+    background-color: #74679a;
+}
+
 .switch_container {
     display: flex;
     justify-content: center;

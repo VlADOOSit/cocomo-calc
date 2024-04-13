@@ -17,9 +17,9 @@ const sidebarNavItems = [
     section: "calculation",
   },
   {
-    display: "About",
+    display: "About Us",
     icon: <i className="bx bx-conversation"></i>,
-    to: "/menu/about",
+    to: "https://github.com/VlADOOSit",
     section: "about",
   },
   {

@@ -1,14 +1,13 @@
 import useKlocStore from "../../Store/KlocStore";
 import "./KlocInput.css";
 
-const KlocInput = () => {
+const KlocInput = (props) => {
   const setKlocStore = useKlocStore((state) => state.setKloc);
 
   function onChangeHandler(e) {
+    console.log(e.target.value);
     const value = parseFloat(e.target.value);
-    if (!isNaN(value)) {
-      setKlocStore(value);
-    }
+    setKlocStore(value);
   }
 
   return (
@@ -17,6 +16,7 @@ const KlocInput = () => {
       <input
         className={"kloc_input"}
         type={"number"}
+        value={props.value}
         onChange={(e) => onChangeHandler(e)}
         placeholder={"kloc"}
         size={25}
