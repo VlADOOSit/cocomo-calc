@@ -2,7 +2,7 @@ import axios from "axios";
 
 const $api = axios.create({
   withCredentials: true,
-  baseURL: `http://localhost:3001/api/`,
+  baseURL: `/api/`,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -28,7 +28,7 @@ $api.interceptors.response.use(
       originalRequest._isRetry = true;
       try {
         const response = await axios.get(
-          `http://localhost:3001/api/auth/refresh`,
+          `/api/auth/refresh`,
           { withCredentials: true },
         );
         localStorage.setItem("token", response.data.accessToken);
